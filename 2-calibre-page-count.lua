@@ -1,5 +1,5 @@
 --[[
-    2-zenui-calibre-page-count.lua
+    2-calibre-page-count.lua
 
     Standalone KOReader user patch. Adds a page-count estimate, sourced
     from Calibre's metadata, for KEPUB/EPUB/FB2 books that have never been
@@ -8,8 +8,8 @@
     Author/Series/Tags navigation), and anything else in KOReader that
     reads a book's page count via BookInfoManager.
 
-    This does NOT modify any Zen UI (or CoverBrowser) file -- it's a
-    single, self-contained file dropped into koreader/patches/, so it
+    This does NOT modify any Zen UI, Bookshelf, Simple UI (or CoverBrowser)
+    file it's a single, self-contained file dropped into koreader/patches/, so it
     survives Zen UI updates and CoverBrowser updates alike. It works by
     wrapping the shared BookInfoManager:getBookInfo() function that both
     plugins already call: when the real lookup comes back with no page
