@@ -1,4 +1,4 @@
-# Calibre Page-count Patch - for Zen UI 
+# Calibre Page Count Estimate Patch - for Zen UI 
 
 A standalone KOReader user patch that shows a page-count estimate for
 KEPUB/EPUB/FB2 books that haven't been opened yet -- sourced from Calibre's metadata --
