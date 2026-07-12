@@ -106,3 +106,5 @@ described below.
 
 Delete `2-zenui-calibre-page-estimate.lua` from `koreader/patches/` and
 restart.
+
+*Credits to @AnthonyGress* 
