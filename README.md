@@ -1,11 +1,13 @@
-# Calibre Page Count Estimate Patch - for Zen UI 
+# Calibre Page Count Estimate Patch - for Zen UI, Bookshelf Plugin and Simple UI 
 
 A standalone KOReader user patch that shows a page-count estimate for
 KEPUB/EPUB/FB2 books that haven't been opened yet -- sourced from Calibre's metadata --
-anywhere Zen UI would otherwise show nothing: mosaic
+anywhere UI would otherwise show nothing: mosaic
 covers, list rows, and the Author/Series/Tags navigation views.
 
 <img width="2356" height="800" alt="Before and After" src="https://github.com/user-attachments/assets/1c73f5e5-1a97-4438-ab6e-82035a1c6dbf" />
+<img width="2356" height="800" alt="Untitled" src="https://github.com/user-attachments/assets/9d13d47a-0c4c-43af-8a0f-17a0d767905d" />
+
 
 ## What it does:
 
@@ -14,12 +16,12 @@ This patch does the same job as directly editing `browser_page_count.lua` /
 file in `koreader/patches/`, which KOReader loads and applies at startup,
 completely separately from the plugin folder. That means:
 
-- Updating or reinstalling Zen UI won't remove it.
-- It doesn't matter which Zen UI version you're running.
+- Updating or reinstalling UI or plugings won't remove it.
+- It doesn't matter which UI or plugings version you're running.
 - Uninstalling this patch is just deleting one file.
 
 It works by wrapping `BookInfoManager:getBookInfo()` -- the shared
-function Zen UI (and CoverBrowser) already call to look up a book's page
+function CoverBrowser already call to look up a book's page
 count. When the real lookup comes back empty, this quietly fills in an
 estimate before handing the result back. Everything downstream just sees
 a number where it used to see nothing; no other code has to know this
@@ -107,4 +109,4 @@ described below.
 Delete `2-zenui-calibre-page-estimate.lua` from `koreader/patches/` and
 restart.
 
-*Credits to @AnthonyGress* 
+
