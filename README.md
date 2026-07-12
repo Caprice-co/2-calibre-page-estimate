@@ -84,7 +84,7 @@ local CHARS_PER_WORD = 6
 To edit the numbers you can just:
 
 - Connect the device via USB.
-- Open koreader/patches/2-zenui-calibre-page-estimate.lua directly in any text editor (on your computer).
+- Open koreader/patches/2-calibre-page-count.lua directly in any text editor (on your computer).
 - Find these two lines near the top and change the numbers.
 
 Save, eject the Kobo, restart KOReader to apply.
@@ -97,7 +97,7 @@ to calculate pages based on words, make sure the column
 
 1. Create a `patches` folder inside your `koreader` folder, if you don't
    have one already (same level as `koreader/settings.reader.lua`).
-2. Copy `2-zenui-calibre-page-estimate.lua` into it.
+2. Copy `2-calibre-page-count.lua` into it.
 3. Restart KOReader.
 
 No other setup needed, beyond having a Calibre library with the metadata
@@ -106,7 +106,7 @@ described below.
 
 ## Uninstall
 
-Delete `2-zenui-calibre-page-estimate.lua` from `koreader/patches/` and
+Delete `2-calibre-page-count.lua` from `koreader/patches/` and
 restart.
 
 
