@@ -175,9 +175,11 @@ problem:
    `koreader/patches/2-calibre-page-estimate.lua` — same folder as
    `koreader/settings.reader.lua`, filename unchanged (the `2-` prefix
    matters, it controls when KOReader runs the patch).
+
 2. **Full restart.** Not just closing and reopening a book — fully close
    and relaunch KOReader (or reboot the device) after adding or editing
    the file.
+
 3. **CoverBrowser must be enabled.** This patch activates when the
    CoverBrowser plugin loads (`userpatch.registerPatchPluginFunc
    ("coverbrowser", ...)`). If CoverBrowser is disabled in KOReader's
@@ -185,10 +187,12 @@ problem:
    whatever UI (Zen UI, Bookshelf, Project: Title, etc.) is showing page
    counts in the first place — check that first if literally nothing
    works, on any book.
+
 4. **The UI's own page-count display must be turned on.** This patch
    only fills in data — it doesn't make Zen UI (or whichever plugin)
    show a page count if that feature is itself switched off. Check your
    file browser / library settings for a "show page count" toggle.
+
 5. **Check for a Lua error.** If the file has been hand-edited (e.g. the
    config constants at the top) and a typo was introduced, KOReader
    would fail to load *this file* silently — the page-count feature
@@ -212,12 +216,31 @@ skip to "works for some books, not others."
    nested under, none of the file-based tiers (1, 2) can find it. It's
    usually at the root of wherever your books folder lives (e.g.
    `/mnt/onboard/metadata.calibre` on a Kobo).
-2. **Is `unzip` available on the device?** Tiers 0 and 3 both shell out
-   to `unzip`. If it's missing (uncommon, but possible on some minimal
-   builds), those two tiers silently produce nothing — tiers 1 and 2
-   (which only need `metadata.calibre`, no `unzip`) would still work if
-   the metadata is there. If *only* books relying on tiers 0/3 come up
-   empty, this is the likely cause.
+
+2. Is unzip available on the device? Tiers 0 and 3 both shell out
+   to unzip; tiers 1 and 2 don't (they only read metadata.calibre
+   with plain file I/O). This is really a platform question, not a
+   "some devices have it, some don't at random" one:
+   
+     - Kobo and Kindle: yes, essentially always. Both run embedded
+   Linux with BusyBox, and BusyBox's unzip applet is a standard part
+   of that toolset on both platforms — nothing extra to install.
+
+     - Android-based e-readers (Boox and similar, or KOReader running
+   on a general Android tablet): not guaranteed. Android doesn't
+   enforce any particular set of command-line utilities being present,
+   so unzip may simply not exist there — this is a known enough
+   limitation that KOReader's own core code deliberately avoids
+   shelling out to unzip on Android for its own internal zip
+   handling, for exactly this reason.
+
+
+   *If you're on Kobo or Kindle and tiers 0/3 aren't producing anything
+   for any book, unzip availability probably isn't the cause — look
+   at the other steps here first. If you're on an Android-based device,
+   this is a plausible explanation for tiers 0/3 coming up consistently
+   empty while tiers 1/2 (metadata.calibre-only) still work fine.*
+
 3. **Do the book paths in `metadata.calibre` actually match?** This file
    stores each book's path (`lpath`) relative to wherever it's rooted.
    If books were moved, renamed, or re-organized on the device *after*
