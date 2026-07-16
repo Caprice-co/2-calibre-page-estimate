@@ -11,6 +11,8 @@ covers, list rows, and the Author/Series/Tags navigation views.
 <img width="2356" height="800" alt="Untitled" src="https://github.com/user-attachments/assets/9d13d47a-0c4c-43af-8a0f-17a0d767905d" />
 
 
+
+
 # What it does:
 
 This patch does the same job as directly editing `browser_page_count.lua` /
@@ -28,6 +30,8 @@ count. When the real lookup comes back empty, this quietly fills in an
 estimate before handing the result back. Everything downstream just sees
 a number where it used to see nothing; no other code has to know this
 patch exists.
+
+
 
 
 ## How the estimate is chosen
@@ -62,6 +66,8 @@ In order, first hit wins:
 If none of the four have anything for a book, nothing changes - same as
 if this patch weren't installed.
 
+
+
 ## Safety: never touches books you've already opened
 
 This patch only fills in a page count for books that have **never been
@@ -77,6 +83,8 @@ gating on "never opened" means this patch can never end up feeding an
 estimate into math that expects a real number - regardless of any plugin, 
 happens to be reading it.
 
+
+
 # Requirements for tiers 1-3
 
 **CoverBrowser must be enabled.**
@@ -86,6 +94,8 @@ columns, synced to the device as `metadata.calibre` (e.g. via the Calibre plugin
 Tier 0 has no such requirement.
    
 **usually those custom columns are filled with a "Count Pages" Calibre plugin or similar**
+
+
 
 # Configuration
 
@@ -126,6 +136,8 @@ To edit the numbers you can just:
 - Find these three lines near the top and change the numbers.
 - Save, eject the Kobo, restart KOReader to apply.
 
+
+
 ## If you still have the earlier patches installed
 
 Update to avoid bugs.
@@ -147,6 +159,10 @@ described below.
 Delete `2-calibre-page-estimate.lua` from `koreader/patches/` and
 restart.
 
+
+
+
+
 ## NOTE for Bookshelf Plugin 
 
 This Patch is an alternative because Bookshelf Plugin has in-build feature that recognises number of pages and applying those to the cover badges. 
@@ -157,7 +173,12 @@ One way to do that you need is set up calibre setting to "send to device" in thi
 
 {title} - {authors} - p({#pages})  - prior to sending the book to device. Or changing names manually.
 
-# Troubleshooting: 2-calibre-page-estimate.lua
+
+
+
+
+
+# Troubleshooting
 
 This patch shows a page count for books you haven't opened yet, sourced
 from four different places, roughly in order of how likely a given book
@@ -165,6 +186,9 @@ is to have the data at all.
 Because of that, "it works for some books but not others" is often
 **expected behavior**, not a bug — this guide walks through how to tell
 the difference.
+
+
+
 
 ## Step 0: confirm the patch actually loaded
 
@@ -205,6 +229,11 @@ problem:
 If all five check out and *no* book shows anything, move to the "not
 working for any book" section below. If it works for *some* books,
 skip to "works for some books, not others."
+
+
+
+
+
 
 ## "Not working for any book at all"
 
@@ -249,6 +278,11 @@ skip to "works for some books, not others."
    Re-syncing from Calibre (so `metadata.calibre` reflects the current
    file layout) fixes this.
 
+
+
+
+
+
 ## "Works for some books, not others" (usually expected)
 
 Each book's estimate comes from the first of four sources that has
@@ -271,6 +305,12 @@ there, whether tier 0 or 3 can help depends on whether that specific
 file happens to have the relevant embedded data, which varies book to
 book and isn't something you can easily predict without checking.
 
+
+
+
+
+
+
 ## "The number is different from what I see after opening the book"
 
 Only tier 1 is an *estimate* (word count → characters → pages, using the
@@ -288,6 +328,12 @@ If you use KOReader's raw (non-stable) page count, tier 1 isn't
 meaningful for you at all — set `ENABLE_WORDS_ESTIMATE = false` near the
 top of the file instead of trying to tune it.
 
+
+
+
+
+
+
 ## "Time left in book is wrong"
 
 This patch itself doesn't touch time-left calculations — it only ever
@@ -297,6 +343,12 @@ estimate on a book you're actively reading, that's a separate issue from
 this patch; check that you're running Zen UI 2.4.4 or later, which fixed
 a related bug in how it calculated time-left for books using stable page
 numbers.
+
+
+
+
+
+
 
 ## Still stuck?
 
