@@ -1,6 +1,6 @@
 # Calibre Page Count Estimate Patch - *Updated v5*
 
-## Applies to Zen UI, Bookshelf Plugin, Simple UI 
+## Applies to Zen UI, Simple UI 
 
 A standalone KOReader user patch that shows a page-count estimate for
 KEPUB/EPUB/FB2 books that haven't been opened yet - sourced from Calibre's metadata -
@@ -165,9 +165,14 @@ restart.
 
 ## NOTE for Bookshelf Plugin 
 
-This Patch is an alternative because Bookshelf Plugin has in-build feature that recognises number of pages and applying those to the cover badges. 
-If you include page number in p(xxx) format in the name of the book - for example: 
-Dark Moon Defender - Sharon Shinn - p(917) - the bookshelf will display pages on its own. 
+Bookshelf's page-count system has completely changed since the time this patch was developed. In this newer version (5.0.5), it's no longer a simple "check BookInfoManager for a page count" lookup — it's grown into its own multi-source pipeline, roughly:
+- Its own native "publisher page numbers" probe (bookshelf_pagemap_probe.lua) — reads an EPUB's zip directly (using KOReader's built-in archive library, not unzip) looking for the exact same EPUB3 page-list / EPUB2 NCX structures our patch's tier 0 checks, plus a third source we didn't cover (Adobe's page-map.xml).
+- Hardcover integration — if you've linked a book to Hardcover, it pulls that edition's page count from there.
+- Its own Calibre metadata reader (calibre_metadata.lua) — a from-scratch reimplementation of reading metadata.calibre, gated behind Bookshelf's own beta setting, with some extra protection against a wireless-sync edge case where KOReader's own built-in Calibre companion plugin can rewrite that file and drop custom columns.
+
+All of this feeds into its own separate database (bookshelf_book_facts_db.lua) — a dedicated book_facts table, entirely independent of BookInfoManager.
+The patch and this version of Bookshelf just don't talk to each other anymore, architecturally.
+
 
 One way to do that you need is set up calibre setting to "send to device" in this format:
 
